@@ -1,0 +1,5 @@
+-
+  key: { content: "a", state: 14 }
+  mutate: "b"
+  newState: 2
+  move: "r"`
