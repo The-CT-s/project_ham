@@ -28,8 +28,11 @@ public class Data {
             InstructionKey ik = keyStringToInstructionKey(k);
             InstructionValue iv = null;
 
-            try { iv = valueMapToInstructionValue(v); }
-            catch (Exception e) { throw new RuntimeException(e); }
+            try {
+                iv = valueMapToInstructionValue(ik, v);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
             map.put(ik, iv);
         });
@@ -54,15 +57,20 @@ public class Data {
         return new InstructionKey(state, content);
     }
 
-    private static InstructionValue valueMapToInstructionValue(Map<String, Object> h) throws Exception {
-        String mutateOrNull = (String) h.get("mutate");
+    private static InstructionValue valueMapToInstructionValue(
+            InstructionKey key,
+            Map<String, Object> h
+    ) throws Exception {
         Character mutate;
-        if (Objects.equals(mutateOrNull, "null")) mutate = null;
-        else mutate = mutateOrNull.charAt(0);
+        if (h.containsKey("mutate")) {
+            String mutateOrNull = (String) h.get("mutate");
+            if (Objects.equals(mutateOrNull, "null")) mutate = null;
+            else mutate = mutateOrNull.charAt(0);
+        } else mutate = key.content;
 
-
-        int state = (int) h.get("newState");
-
+        int state;
+        if (h.containsKey("newState")) state = (int) h.get("newState");
+        else state = key.state;
 
         String strMovement = ((String) h.get("move")).toLowerCase();
         Movement movement;

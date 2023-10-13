@@ -19,7 +19,7 @@ public class TuringMachine {
         updateFunction = Data.loadYaml(path);
 
         // Fill the tape
-        for (int i = 0; i < input.length(); i ++) {
+        for (int i = 0; i < input.length(); i++) {
             tape[i] = input.charAt(i);
         }
 
@@ -34,7 +34,8 @@ public class TuringMachine {
             display();
             try {
                 Thread.sleep(200);
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
     }
 
@@ -61,7 +62,7 @@ public class TuringMachine {
         InstructionValue v = updateFunction.get(k);
 
         if (v == null) {
-            throw new RuntimeException("No value found for (" + state + ", " + content + ")");
+            throw new RuntimeException("No instruction found for (content: " + content + ", state: " + state + ")");
         }
 
         // Update the turing machine using the instructions

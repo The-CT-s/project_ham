@@ -3,8 +3,8 @@ package machine;
 import java.util.Objects;
 
 public class InstructionKey {
-    int state;
-    Character content;
+    public int state;
+    public Character content;
 
     public InstructionKey(int state, Character content) {
         this.state = state;
