@@ -1,5 +1,7 @@
 package machine;
 
+import parser.Data;
+
 import java.util.HashMap;
 
 public class TuringMachine {
@@ -11,24 +13,27 @@ public class TuringMachine {
 
     public TuringMachine(
             int initialState,
-            HashMap<InstructionKey, InstructionValue> instructionMap,
-            String input
-    ) {
+            String input,
+            String path
+    ) throws Exception {
+        updateFunction = Data.loadYaml(path);
+
         // Fill the tape
         for (int i = 0; i < input.length(); i ++) {
             tape[i] = input.charAt(i);
         }
 
+        // Set the initial state
         this.state = initialState;
-        this.updateFunction = instructionMap;
     }
 
-    boolean run() {
-        while (true) {
-            step();
+    public void run() {
+        boolean finished = false;
+        while (!finished) {
+            finished = step();
             display();
             try {
-                Thread.sleep(2000);
+                Thread.sleep(200);
             } catch (Exception ignore) {}
         }
     }
@@ -47,7 +52,7 @@ public class TuringMachine {
         tape = newTape;
     }
 
-    void step() {
+    boolean step() {
         // Read the content
         Character content = tape[head];
 
@@ -56,13 +61,15 @@ public class TuringMachine {
         InstructionValue v = updateFunction.get(k);
 
         if (v == null) {
-            System.out.println("No value found for (" + state + ", " + content + ")");
+            throw new RuntimeException("No value found for (" + state + ", " + content + ")");
         }
 
         // Update the turing machine using the instructions
         tape[head] = v.mutate;
         state = v.newState;
         move(v.movement);
+
+        return v.movement == Movement.Halt;
     }
 
     void display() {

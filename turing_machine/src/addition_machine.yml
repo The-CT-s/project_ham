@@ -1,5 +1,20 @@
--
-  key: { content: "a", state: 14 }
-  mutate: "b"
+(1, 0):
+  mutate: "1"
+  newState: 1
+  move: "r"
+(1, 1):
+  mutate: "1"
+  newState: 1
+  move: "r"
+(c, 1):
+  mutate: "1"
+  newState: 1
+  move: "r"
+(null, 1):
+  mutate: "null"
   newState: 2
-  move: "r"`
+  move: "l"
+(1, 2):
+  mutate: "null"
+  newState: -1
+  move: "Halt"
