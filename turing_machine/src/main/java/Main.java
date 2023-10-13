@@ -16,10 +16,10 @@ public class Main {
 //        }
 
         TuringMachine add = new TuringMachine(
+                8,
                 0,
-                9,
-                "_0101_0101",
-                "/Users/angelcr/projects/project_ham/turing_machine/src/compare_neighbour_chars.yml"
+                "01_00_10_01_",
+                "/Users/angelcr/projects/project_ham/turing_machine/src/even_palindromes.yml"
         );
 
         add.run();

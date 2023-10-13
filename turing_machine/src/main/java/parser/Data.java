@@ -72,13 +72,15 @@ public class Data {
         if (h.containsKey("newState")) state = (int) h.get("newState");
         else state = key.state;
 
-        String strMovement = ((String) h.get("move")).toLowerCase();
         Movement movement;
+        if (!h.containsKey("move")) movement = Movement.Stay;
+        else {
+            String strMovement = ((String) h.get("move")).toLowerCase();
 
-        if (strMovement.charAt(0) == 'r') movement = Movement.Right;
-        else if (strMovement.charAt(0) == 'l') movement = Movement.Left;
-        else if (strMovement.equals("halt")) movement = Movement.Halt;
-        else throw new RuntimeException("Could not parse movement " + strMovement);
+            if (strMovement.charAt(0) == 'r') movement = Movement.Right;
+            else if (strMovement.charAt(0) == 'l') movement = Movement.Left;
+            else throw new RuntimeException("Could not parse movement " + strMovement);
+        }
 
         return new InstructionValue(mutate, state, movement);
     }

@@ -46,15 +46,15 @@ public class TuringMachine {
 
 
     public void run() {
-        boolean finished = step();
+        step();
         display();
 
-        try {
-            Thread.sleep(500);
-        } catch (Exception ignore) {
-        }
+//        try {
+//            Thread.sleep(500);
+//        } catch (Exception ignore) {
+//        }
 
-        if (!finished) run();
+        if (state != -1) run();
     }
 
     void move(Movement m) {
@@ -71,7 +71,7 @@ public class TuringMachine {
         tape = newTape;
     }
 
-    boolean step() {
+    void step() {
         // Read the content
         Character content = tape[head];
 
@@ -87,8 +87,6 @@ public class TuringMachine {
         tape[head] = v.mutate;
         state = v.newState;
         move(v.movement);
-
-        return v.movement == Movement.Halt;
     }
 
     void display() {
@@ -96,12 +94,23 @@ public class TuringMachine {
         int len = tape.length;
 
         for (int i = head - diff; i <= head + diff; i++) {
-            if (i >= 0 && i < len) System.out.print(tape[i] + " | ");
+            if (i >= 0 && i < len) {
+                Character tapeStr;
+                if (tape[i] == null) tapeStr = 'B';
+                else tapeStr = tape[i];
+                System.out.print(tapeStr + " | ");
+            }
         }
 
         System.out.println();
         System.out.println(" ".repeat(Math.min(diff, head) * 4) + "^");
-        System.out.println("State: " + state + "\n\n");
+        System.out.println("State: " + state + "\n\n\n");
+    }
+
+    public void showCommand(Character c, int s) {
+        InstructionValue x = updateFunction.get(new InstructionKey(s, c));
+
+        System.out.println("(mutate: " + x.mutate + ", move: " + x.movement + ", newState: " + x.newState + ")");
     }
 }
 
