@@ -7,6 +7,7 @@ import machine.Movement;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Objects;
 
 public class Data {
 
-    public static HashMap<InstructionKey, InstructionValue> loadYaml(String path) throws Exception {
+    public static HashMap<InstructionKey, InstructionValue> loadYaml(String path) throws FileNotFoundException {
         InputStream inputStream = new FileInputStream(path);
         Yaml yaml = new Yaml();
 
@@ -26,7 +27,7 @@ public class Data {
         data.forEach((k, v) -> {
             // Make the InstructionKey
             InstructionKey ik = keyStringToInstructionKey(k);
-            InstructionValue iv = null;
+            InstructionValue iv;
 
             try {
                 iv = valueMapToInstructionValue(ik, v);
@@ -60,7 +61,7 @@ public class Data {
     private static InstructionValue valueMapToInstructionValue(
             InstructionKey key,
             Map<String, Object> h
-    ) throws Exception {
+    ) {
         Character mutate;
         if (h.containsKey("mutate")) {
             String mutateOrNull = (String) h.get("mutate");

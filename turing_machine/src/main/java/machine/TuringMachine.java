@@ -7,10 +7,14 @@ import java.util.HashMap;
 public class TuringMachine {
     Character[] tape = new Character[500];
     int head = 0;
-    int state = 0;
+    int state;
 
     protected HashMap<InstructionKey, InstructionValue> updateFunction;
 
+    /*
+     * @throws FileNotFoundException if the file with the tm instructions could not be found
+     * @throws RuntimeException if there is an error parsing instructions, or if an instruction is not fond
+     * */
     public TuringMachine(
             int initialState,
             String input,
@@ -18,23 +22,6 @@ public class TuringMachine {
     ) throws Exception {
         updateFunction = Data.loadYaml(path);
 
-        // Fill the tape
-        for (int i = 0; i < input.length(); i++) {
-            tape[i] = input.charAt(i);
-        }
-
-        // Set the initial state
-        this.state = initialState;
-    }
-
-    public TuringMachine(
-            int initialState,
-            int initialHead,
-            String input,
-            String path
-    ) throws Exception {
-        updateFunction = Data.loadYaml(path);
-        this.head = initialHead;
         // Fill the tape
         for (int i = 0; i < input.length(); i++) {
             tape[i] = input.charAt(i);
@@ -49,11 +36,6 @@ public class TuringMachine {
         step();
         display();
 
-//        try {
-//            Thread.sleep(500);
-//        } catch (Exception ignore) {
-//        }
-
         if (state != -1) run();
     }
 
@@ -66,7 +48,7 @@ public class TuringMachine {
 
     void extendTape() {
         head += 10;
-        Character[] newTape = new Character[tape.length + 10];
+        Character[] newTape = new Character[tape.length + 20];
         System.arraycopy(tape, 0, newTape, 10, tape.length);
         tape = newTape;
     }
@@ -105,12 +87,6 @@ public class TuringMachine {
         System.out.println();
         System.out.println(" ".repeat(Math.min(diff, head) * 4) + "^");
         System.out.println("State: " + state + "\n\n\n");
-    }
-
-    public void showCommand(Character c, int s) {
-        InstructionValue x = updateFunction.get(new InstructionKey(s, c));
-
-        System.out.println("(mutate: " + x.mutate + ", move: " + x.movement + ", newState: " + x.newState + ")");
     }
 }
 
