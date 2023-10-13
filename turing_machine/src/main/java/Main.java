@@ -17,8 +17,9 @@ public class Main {
 
         TuringMachine add = new TuringMachine(
                 0,
-                "111c121",
-                "/Users/angelcr/projects/project_ham/turing_machine/src/addition_machine.yml"
+                9,
+                "_0101_0101",
+                "/Users/angelcr/projects/project_ham/turing_machine/src/compare_neighbour_chars.yml"
         );
 
         add.run();

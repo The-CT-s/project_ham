@@ -27,16 +27,34 @@ public class TuringMachine {
         this.state = initialState;
     }
 
-    public void run() {
-        boolean finished = false;
-        while (!finished) {
-            finished = step();
-            display();
-            try {
-                Thread.sleep(200);
-            } catch (Exception ignore) {
-            }
+    public TuringMachine(
+            int initialState,
+            int initialHead,
+            String input,
+            String path
+    ) throws Exception {
+        updateFunction = Data.loadYaml(path);
+        this.head = initialHead;
+        // Fill the tape
+        for (int i = 0; i < input.length(); i++) {
+            tape[i] = input.charAt(i);
         }
+
+        // Set the initial state
+        this.state = initialState;
+    }
+
+
+    public void run() {
+        boolean finished = step();
+        display();
+
+        try {
+            Thread.sleep(500);
+        } catch (Exception ignore) {
+        }
+
+        if (!finished) run();
     }
 
     void move(Movement m) {
@@ -83,7 +101,7 @@ public class TuringMachine {
 
         System.out.println();
         System.out.println(" ".repeat(Math.min(diff, head) * 4) + "^");
-        System.out.println("(State: " + state + ", head: " + head + ")");
+        System.out.println("State: " + state + "\n\n");
     }
 }
 
