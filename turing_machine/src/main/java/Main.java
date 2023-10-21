@@ -11,6 +11,7 @@ public class Main {
         add.run();
     }
 
+    // Convert the user input into binary, and add underscores as spaces
     public static String binaryString(String s) {
         char[] chars = s.toLowerCase().toCharArray();
         StringBuilder fin = new StringBuilder();
